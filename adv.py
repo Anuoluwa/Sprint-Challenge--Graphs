@@ -9,16 +9,15 @@ from ast import literal_eval
 # Load world
 world = World()
 
-
 # You may uncomment the smaller graphs for development and testing purposes.
-# map_file = "maps/test_line.txt"
-# map_file = "maps/test_cross.txt"
-# map_file = "maps/test_loop.txt"
-# map_file = "maps/test_loop_fork.txt"
+map_file = "maps/test_line.txt"
+map_file = "maps/test_cross.txt"
+map_file = "maps/test_loop.txt"
+map_file = "maps/test_loop_fork.txt"
 map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
-room_graph=literal_eval(open(map_file, "r").read())
+room_graph = literal_eval(open(map_file, "r").read())
 world.load_graph(room_graph)
 
 # Print an ASCII map
@@ -30,12 +29,13 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
-
-traversalPath = [] #populate with n/s/e/w
+traversalPath = []  # populate with n/s/e/w
 # make a visited rooms set
 visited = set()
 # add room 0 to visited rooms
 visited.add(0)
+
+
 # function to traverse graph
 # checks if any room around hasn't been seen
 def checkRooms(currentRoomID):
@@ -44,7 +44,8 @@ def checkRooms(currentRoomID):
             return False
     return True
 
-# function to track unvisited rooms
+
+# track unvisited rooms
 # goes into first unseen room around after traversing a path
 def trackNewRooms(currentRoomID):
     for direction, any_room in room_graph[currentRoomID][1].items():
@@ -54,14 +55,16 @@ def trackNewRooms(currentRoomID):
             return any_room
     print('No way!!')
 
-# function to get directions
+
+# to get directions
 def directionToRoom(currentRoom, room):
     for path, location in room_graph[currentRoom][1].items():
         if location == room:
             return path
     return None
 
-# function to step back to previous rooms
+
+# to step back to previous rooms
 def stepBackToPrev():
     q = Queue()
     visitedRoom = set()
@@ -85,6 +88,8 @@ def stepBackToPrev():
                 return (direction, actualPath[len(actualPath) - 1])
             q.enqueue(traversedRoom)
     return None
+
+
 # traverse rooms using dft starting from room 0
 currentRoom = 0
 while True:
@@ -107,6 +112,7 @@ while True:
         break
 
 
+
 # TRAVERSAL TEST
 visited_rooms = set()
 player.current_room = world.starting_room
@@ -121,8 +127,6 @@ if len(visited_rooms) == len(room_graph):
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
-
-
 
 #######
 # UNCOMMENT TO WALK AROUND
